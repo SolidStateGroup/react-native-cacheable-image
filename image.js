@@ -180,7 +180,8 @@ class CacheableImage extends React.Component {
                 skipSourceCheck ||
                 typeof skipSourceCheck === 'undefined' ||
                 (!skipSourceCheck && source != this.props.source)
-           )
+           ) && source.uri.indexOf('assets-library://') == -1
+           && source.uri.indexOf('file://') == -1
         )
         { // remote
 
@@ -204,10 +205,10 @@ class CacheableImage extends React.Component {
             }
 
             const type = url.pathname.replace(/.*\.(.*)/, '$1');
-            var cacheKey = SHA1(cacheable) + (type.length < url.pathname.length ? '.' + type : '');
-                    cacheKey = cacheKey.replace(/\//g, '');
+            const cacheKey = SHA1(cacheable) + (type.length < url.pathname.length ? '.' + type : '');
+            let safeCacheKey = cacheKey.replace(/\//g, '.').replace(/%/, '.');
 
-            this.checkImageCache(source.uri, url.host, cacheKey);
+            this.checkImageCache(source.uri, url.host, safeCacheKey);
             this.setState({isRemote: true});
         }
         else {
