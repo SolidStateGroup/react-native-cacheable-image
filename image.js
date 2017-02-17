@@ -182,7 +182,7 @@ class CacheableImage extends React.Component {
                 (!skipSourceCheck && source != this.props.source)
            ) && source.uri.indexOf('assets-library://') == -1
            && source.uri.indexOf('file://') == -1
-           && source.uri.indexOf('/var') != 0
+           && source.uri.indexOf('/') != 0 // catches any local paths
         )
         { // remote
 
